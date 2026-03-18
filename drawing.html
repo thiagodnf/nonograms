@@ -1,66 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-	  	<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="Discover Game">
-	  	<meta name="author" content="Thiago Ferreira">
-		<title>Nonograms</title>
-		<link rel="icon" type="image/png" href="img/logo.png">
-	  	<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/style.css">
-		<script src="js/functions_url.js"></script>
-		<script type="text/javascript">
-			var drawing = getUrlVars()["d"];
 
-			if(drawing === undefined || drawing === ''){
-				alert("You need to choose a drawing before");
-				window.location = "index.html";
-			}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Discover Game">
+    <meta name="author" content="Thiago Ferreira">
+    <title>Nonograms</title>
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/functions_url.js"></script>
+    <script type="text/javascript">
+        var drawing = getUrlVars()["d"];
 
-			if ((/^\d+x\d+x\d+$/.exec(drawing)) === null) {
-				alert("The url is invalid");
-				window.location = "index.html";
-			}
-		</script>
-	</head>
-	<body>
-		<nav class="navbar navbar-custom navbar-fixed-top">
-			<div class="container">
-        		<div class="navbar-header">
-          			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-          			</button>
-					<a class="navbar-brand" href="#">Nanograms</a>
-        		</div>
-        		<div id="navbar" class="navbar-collapse collapse">
-          			<ul class="nav navbar-nav">
-            			<li><a href="index.html">Home</a></li>
-						<li><a href="creative_mode.html">Creative Mode</a></li>
-						<li><a href="about.html">About</a></li>
-          			</ul>
-        		</div>
-      		</div>
-    	</nav>
-		<div class="container">
-			<div class="row">
-				<div id="content" class="col-md-12">
-					<div id="canvas-scroll">
-						<canvas id="canvas" width="1" height="1"></canvas>
-					</div>
-				</div>
-			</div>
-		<div>
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/vars_global.js"></script>
-		<script src="js/functions_canvas.js"></script>
-		<script src="js/functions_util.js"></script>
-		<script src="js/functions_init.js"></script>
-		<script src="js/functions_drawings.js"></script>
-		<script src="js/drawing.js"></script>
-	</body>
+        if (drawing === undefined || drawing === '') {
+            alert("You need to choose a drawing before");
+            window.location = "index.html";
+        }
+
+        if ((/^\d+x\d+x\d+$/.exec(drawing)) === null) {
+            alert("The url is invalid");
+            window.location = "index.html";
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-custom" data-bs-theme="dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Nonograms</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbarSupportedContent" class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="creative_mode.html">Creative Mode</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-md-12">
+                <div id="canvas-scroll">
+                    <canvas id="canvas" width="1" height="1"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="js/vars_global.js"></script>
+    <script src="js/functions_canvas.js"></script>
+    <script src="js/functions_util.js"></script>
+    <script src="js/functions_init.js"></script>
+    <script src="js/functions_drawings.js"></script>
+    <script src="js/drawing.js"></script>
+</body>
+
 </html>

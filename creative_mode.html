@@ -1,88 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-	  	<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="Discover Game">
-	  	<meta name="author" content="Thiago Ferreira">
-		<title>Nonograms</title>
-		<link rel="icon" type="image/png" href="img/logo.png">
-	  	<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/bootstrap-slider.min.css">
-		<link rel="stylesheet" href="css/style.css">
-	</head>
-	<body>
-		<nav class="navbar navbar-custom navbar-fixed-top">
-			<div class="container">
-        		<div class="navbar-header">
-          			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-          			</button>
-					<a class="navbar-brand" href="#">Nanograms</a>
-        		</div>
-        		<div id="navbar" class="navbar-collapse collapse">
-          			<ul class="nav navbar-nav">
-            			<li><a href="index.html">Home</a></li>
-						<li class="active"><a href="creative_mode.html">Creative Mode</a></li>
-						<li><a href="about.html">About</a></li>
-          			</ul>
-        		</div>
-      		</div>
-    	</nav>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3">
-					<form id="form-generate-drawing" action="">
-						<div class="form-group">
-							<label for="lines">Lines</label>
-							<input type="number" data-validation="number" class="form-control" id="lines" data-validation-allowing="range[1;600]" placeholder="Number of Lines" value="10"/>
-						</div>
-						<div class="form-group">
-							<label for="columns">Columns</label>
-							<input type="number" data-validation="number" class="form-control" id="columns" data-validation-allowing="range[1;600]" placeholder="Number of Columns" value="10"/>
-						</div>
-						<div class="form-group">
-							<label for="slider-zoom">Zoom</label> <br>
-							<input type="text" id="slider-zoom" data-slider-id='slider-zoom-slider'/>
-						</div>
-						<button type="submit" id="button-generate-drawing" class="btn btn-primary btn-block">Generate Drawing</button>
-					</form>
-					<hr/>
-					<a id="button-export-to-png"  href="#" class="btn btn-default btn-block">Export to PNG</a>
-					<br>
-					<button type="button" id="button-export-to-json" class="btn btn-default btn-block">Export to JSON</button>
-					<br>
-				</div>
-				<div class="col-md-9">
-					<div class="btn-group btn-group-sm" role="group" aria-label="...">
-						<button type="button" id="button-add" class="btn btn-default toolbar-creative-mode active">
-							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
-						</button>
-					  	<button type="button" id="button-remove" class="btn btn-default toolbar-creative-mode">
-							<span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Remove
-						</button>
-					</div>
-					<br/>
-					<br/>
-					<div id="canvas-scroll">
-						<canvas id="canvas" width="1" height="1"></canvas>
-					</div>
-				</div>
-			</div>
-		<div>
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/bootstrap-slider.min.js"></script>
-		<script src="js/jquery.form-validator.min.js"></script>
-		<script src="js/vars_global.js"></script>
-		<script src="js/functions_init.js"></script>
-		<script src="js/functions_canvas.js"></script>
-		<script src="js/functions_util.js"></script>
-		<script src="js/functions_drawings.js"></script>
-		<script src="js/functions_file.js"></script>
-		<script src="js/creative_mode.js"></script>
-	</body>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Discover Game">
+    <meta name="author" content="Thiago Ferreira">
+    <title>Nonograms</title>
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-custom" data-bs-theme="dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Nonograms</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbarSupportedContent" class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="creative_mode.html">Creative Mode</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+
+                <form id="form-generate-drawing">
+
+                    <div class="mb-3">
+                        <label for="lines" class="form-label">Lines</label>
+                        <input type="number" data-validation="number" class="form-control" id="lines" placeholder="Number of Lines" value="10" min="1" max="600" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="columns" class="form-label">Columns</label>
+                        <input type="number" data-validation="number" class="form-control" id="columns" placeholder="Number of Columns" value="10" min="1" max="600" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="slider-zoom" class="form-label">Zoom</label> <br>
+                        <input type="range" id="slider-zoom" class="form-range" min="0.05" max="1" value="1" step="0.05" />
+                    </div>
+
+                    <button type="submit" id="button-generate-drawing" class="btn btn-primary btn-block">Generate</button>
+
+                </form>
+
+                <hr />
+                <a id="button-export-to-png" href="#" class="btn btn-light btn-block">Export to PNG</a>
+                <br>
+                <button type="button" id="button-export-to-json" class="btn btn-light btn-block">Export to JSON</button>
+                <br>
+            </div>
+            <div class="col-md-9">
+
+                <div class="btn-group mb-3" role="group">
+
+                    <input type="radio" class="btn-check" name="btnradio" id="button-add" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="button-add"><i class="bi bi-plus-circle me-2"></i>Add</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="button-remove" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="button-remove"><i class="bi bi-trash me-2"></i>Remove</label>
+
+                </div>
+
+                <div id="canvas-scroll">
+                    <canvas id="canvas" width="1" height="1"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="js/vars_global.js"></script>
+    <script src="js/functions_init.js"></script>
+    <script src="js/functions_canvas.js"></script>
+    <script src="js/functions_util.js"></script>
+    <script src="js/functions_drawings.js"></script>
+    <script src="js/functions_file.js"></script>
+    <script src="js/creative_mode.js"></script>
+</body>
+
 </html>
