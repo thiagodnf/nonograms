@@ -1,0 +1,23 @@
+{
+	"name": "nonograms",
+	"version": "1.0.0",
+	"description": "A picture logic puzzle in which cells in a grid must be colored or left blank according to numbers at the side of the grid to reveal a hidden picture",
+	"main": "app.js",
+	"scripts": {
+		"start": "node app.js"
+	},
+	"engines": {
+		"node": ">=0.10.0"
+	},
+	"files": [
+		"app.js"
+	],
+	"author": "Thiago Ferreira",
+	"license": "MIT",
+	"homepage": "https://thiagodnf.github.io/nonograms/",
+	"dependencies": {
+		"serve-static": "",
+		"connect": "",
+		"network": ""
+	}
+}
