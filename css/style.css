@@ -17,7 +17,8 @@ canvas{
 }
 
 #canvas-scroll{
-	border: 1px solid black;
+	border: 1px solid lightgray;
+    border-radius: 10px;
 }
 
 .navbar-custom{
