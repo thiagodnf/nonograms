@@ -19,7 +19,9 @@ var dim = 25;
 
 const $dimensionsModal = document.getElementById('dimensionsModal');
 const $dimensionsForm = document.getElementById('dimensionsForm');
-const $btnNew = document.getElementById("btn-new")
+const $btnNew = document.getElementById("btn-new");
+const $btnExportToJson = document.getElementById("btn-export-to-json");
+const $btnExportToPng = document.getElementById("btn-export-to-png");
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -152,17 +154,12 @@ function onInit() {
         nonogram = savedNonogram;
     }
 
-    $("#btn-export-to-json").click(function () {
+    $btnExportToJson.addEventListener('click', () => {
         ExportUtils.asJson(nonogram);
     });
 
-    $("#btn-export-to-png").click(function () {
+    $btnExportToPng.addEventListener('click', () => {
         ExportUtils.asPng(canvas);
-    });
-
-    $("#canvas-scroll").scroll(function (event) {
-        scrollTop = $(this).scrollTop();
-        scrollLeft = $(this).scrollLeft();
     });
 }
 
