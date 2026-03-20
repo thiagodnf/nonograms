@@ -40,10 +40,6 @@ $dimensionsModal.addEventListener('show.bs.modal', () => {
     $dimensionsForm.classList.remove('was-validated');
 });
 
-$btnNew.addEventListener('click', () => {
-    modal.show();
-});
-
 $dimensionsForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -153,6 +149,10 @@ function onInit() {
     if (savedNonogram) {
         nonogram = savedNonogram;
     }
+
+    $btnNew.addEventListener('click', () => {
+        modal.show();
+    });
 
     $btnExportToJson.addEventListener('click', () => {
         ExportUtils.asJson(nonogram);
