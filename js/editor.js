@@ -17,8 +17,8 @@ let nonogram = {
 // Cell's Dimensions
 var dim = 25;
 
-const $dimensionsModal = document.getElementById('dimensionsModal');
-const $dimensionsForm = document.getElementById('dimensionsForm');
+const $newModal = document.getElementById('newModal');
+const $newForm = document.getElementById('newForm');
 const $btnNew = document.getElementById("btn-new");
 const $btnExportToJson = document.getElementById("btn-export-to-json");
 const $btnExportToPng = document.getElementById("btn-export-to-png");
@@ -27,28 +27,28 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const canvasZoom = new CanvasZoom(canvas);
 
-const modal = new bootstrap.Modal($dimensionsModal, {
+const modal = new bootstrap.Modal($newModal, {
     backdrop: 'static',
     keyboard: false
 });
 
-$dimensionsModal.addEventListener('shown.bs.modal', () => {
+$newModal.addEventListener('shown.bs.modal', () => {
     document.getElementById('lines').focus();
 });
 
-$dimensionsModal.addEventListener('show.bs.modal', () => {
-    $dimensionsForm.classList.remove('was-validated');
+$newModal.addEventListener('show.bs.modal', () => {
+    $newForm.classList.remove('was-validated');
 });
 
-$dimensionsForm.addEventListener('submit', (event) => {
+$newForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    if (!$dimensionsForm.checkValidity()) {
-        $dimensionsForm.classList.add('was-validated');
+    if (!$newForm.checkValidity()) {
+        $newForm.classList.add('was-validated');
         return;
     }
 
-    const data = Object.fromEntries(new FormData($dimensionsForm).entries());
+    const data = Object.fromEntries(new FormData($newForm).entries());
 
     onModalClose(data);
 
