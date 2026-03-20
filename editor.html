@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg fixed-top navbar-custom" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-sm fixed-top navbar-custom" data-bs-theme="dark">
         <div class="container">
             <a class="navbar-brand" href="#">Nonograms</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
@@ -36,11 +36,15 @@
         <div class="row mb-3" id="toolbar">
             <div class="d-flex justify-content-between">
                 <div class="btn-group">
-                    <button class="btn btn-warning" id="btn-new"><i class="bi bi-plus-circle me-2"></i>New</button>
+                    <button class="btn btn-warning" id="btn-new">
+                        <i class="bi bi-plus-circle"></i>
+                        <span class="d-none d-sm-inline ms-2">New</span>
+                    </button>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-file-earmark-arrow-down"></i> Export
+                        <i class="bi bi-file-earmark-arrow-down"></i>
+                        <span class="d-none d-sm-inline ms-2">Export</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#" id="btn-export-to-png">PNG</a></li>
