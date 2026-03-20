@@ -97,9 +97,6 @@ function update() {
 
     const { lines, columns, grid } = nonogram;
 
-    if (!grid) return;
-
-    // Draw black square
     for (var i = 0; i < lines; i++) {
         for (var j = 0; j < columns; j++) {
             if (grid[i][j] == 1) {
