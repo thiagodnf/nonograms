@@ -85,17 +85,6 @@ function createMatrix(x, y) {
     return matrix;
 }
 
-function resizeCanvas() {
-
-    const rect = canvas.getBoundingClientRect();
-
-    const availableHeight = window.innerHeight - rect.top - 20;
-
-    canvas.style.height = availableHeight + "px";
-    canvas.width = rect.width;
-    canvas.height = availableHeight;
-}
-
 function draw() {
 
     canvasZoom.clear(ctx);
@@ -141,7 +130,7 @@ function onMouseUp(mouse) {
 
 function onInit() {
 
-    resizeCanvas();
+    canvasZoom.resizeCanvas();
     draw();
 
     const savedNonogram = LocalStorageUtils.get("creative-mode-nonogram");
@@ -176,7 +165,7 @@ canvasZoom.on("mouseup", onMouseUp);
 canvas.addEventListener('contextmenu', onContextMenu);
 
 // Add Window Events
-window.addEventListener('resize', resizeCanvas);
+window.addEventListener('resize', canvasZoom.resizeCanvas);
 
 // Add Document Events
 document.addEventListener('DOMContentLoaded', onInit);

@@ -1,7 +1,5 @@
 export default class CanvasZoom {
 
-    static canvas = null;
-
     static mouse = null;
 
     // coordinates of our cursor
@@ -18,7 +16,7 @@ export default class CanvasZoom {
 
     constructor(canvas) {
 
-        CanvasZoom.canvas = canvas;
+        this.canvas = canvas;
 
         // internal storage for listeners
         this.listeners = {};
@@ -33,17 +31,17 @@ export default class CanvasZoom {
         const that = this;
 
         // Mouse Event Handlers
-        canvas.addEventListener('mousedown', onMouseDown);
-        canvas.addEventListener('mouseup', onMouseUp, false);
-        canvas.addEventListener('mouseout', onMouseOut, false);
-        canvas.addEventListener('mousemove', onMouseMove, false);
-        canvas.addEventListener('wheel', onMouseWheel, false);
+        this.canvas.addEventListener('mousedown', onMouseDown);
+        this.canvas.addEventListener('mouseup', onMouseUp, false);
+        this.canvas.addEventListener('mouseout', onMouseOut, false);
+        this.canvas.addEventListener('mousemove', onMouseMove, false);
+        this.canvas.addEventListener('wheel', onMouseWheel, false);
 
         this.zoomActualSize();
 
         function getMouseLocation(e) {
 
-            const rect = canvas.getBoundingClientRect();
+            const rect = that.canvas.getBoundingClientRect();
 
             const screenX = e.clientX - rect.left;
             const screenY = e.clientY - rect.top;
@@ -107,7 +105,7 @@ export default class CanvasZoom {
             CanvasZoom.leftMouseDown = false;
             CanvasZoom.rightMouseDown = false;
 
-            that.emit('mouseup', CanvasZoom.mouse, that.wasMoving);
+            that.emit('mouseup', CanvasZoom.mouse);
         }
 
         function onMouseWheel(event) {
@@ -136,6 +134,17 @@ export default class CanvasZoom {
         }
     }
 
+    resizeCanvas() {
+
+        const rect = this.canvas.getBoundingClientRect();
+
+        const availableHeight = window.innerHeight - rect.top - 20;
+
+        this.canvas.style.height = availableHeight + "px";
+        this.canvas.width = rect.width;
+        this.canvas.height = availableHeight;
+    }
+
     size(size) {
         return size * this.scale;
     }
@@ -157,11 +166,11 @@ export default class CanvasZoom {
     }
 
     trueHeight() {
-        return CanvasZoom.canvas.clientHeight / this.scale;
+        return this.canvas.clientHeight / this.scale;
     }
 
     trueWidth() {
-        return CanvasZoom.canvas.clientWidth / this.scale;
+        return this.canvas.clientWidth / this.scale;
     }
 
     zoomActualSize() {
