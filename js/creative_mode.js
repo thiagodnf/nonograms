@@ -1,126 +1,185 @@
-var scrollTop = 0;
-var scrollLeft = 0;
+import LocalStorageUtils from "./utils/LocalStorageUtils.js";
+import CanvasZoom from "./utils/CanvasZoom.js";
+import ExportUtils from "./utils/ExportUtils.js";
 
-var scale = 1;
+let nonogram = {
+    lines: 5,
+    columns: 5,
+    grid: [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+    ]
+}
 
-var operation = 0;
+// Cell's Dimensions
+var dim = 25;
+
+const $dimensionsModal = document.getElementById('dimensionsModal');
+const $dimensionsForm = document.getElementById('dimensionsForm');
+const $btnNew = document.getElementById("btn-new")
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const canvasZoom = new CanvasZoom(canvas);
+
+const modal = new bootstrap.Modal($dimensionsModal, {
+    backdrop: 'static',
+    keyboard: false
+});
+
+$dimensionsModal.addEventListener('shown.bs.modal', () => {
+    document.getElementById('lines').focus();
+});
+
+$dimensionsModal.addEventListener('show.bs.modal', () => {
+    $dimensionsForm.classList.remove('was-validated');
+});
+
+$btnNew.addEventListener('click', () => {
+    modal.show();
+});
+
+$dimensionsForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (!$dimensionsForm.checkValidity()) {
+        $dimensionsForm.classList.add('was-validated');
+        return;
+    }
+
+    const data = Object.fromEntries(new FormData($dimensionsForm).entries());
+
+    onModalClose(data);
+
+    modal.hide();
+});
+
+function onModalClose(data) {
+
+    const lines = parseInt(data.lines);
+    const columns = parseInt(data.columns);
+
+    nonogram = {
+        lines,
+        columns,
+        grid: createMatrix(columns, lines)
+    }
+
+    LocalStorageUtils.set("creative-mode-nonogram", nonogram);
+}
+
+function createMatrix(x, y) {
+
+    const matrix = new Array(y);
+
+    for (let i = 0; i < y; i++) {
+
+        matrix[i] = new Array(x);
+
+        for (let j = 0; j < x; j++) {
+            matrix[i][j] = 0;
+        }
+    }
+
+    return matrix;
+}
 
 function resizeCanvas() {
-    ctx.canvas.width = scale * dim * columns + 1;
-    ctx.canvas.height = scale * dim * lines + 1;
+
+    const rect = canvas.getBoundingClientRect();
+
+    const availableHeight = window.innerHeight - rect.top - 20;
+
+    canvas.style.height = availableHeight + "px";
+    canvas.width = rect.width;
+    canvas.height = availableHeight;
 }
 
-function drawCell(i, j, color) {
-    fillSquare(j * dim + 1, i * dim + 1, dim - 1, dim - 1, color);
+function draw() {
+
+    canvasZoom.clear(ctx);
+
+    update();
+
+    requestAnimationFrame(draw);
 }
 
-function setBlackCell(i, j) {
-    grid[i][j] = 1;
-    drawCell(i, j, "#424242");
-}
+function update() {
 
-function removeBlackCell(i, j) {
-    grid[i][j] = 0;
-    drawCell(i, j, "white");
-}
+    const { lines, columns, grid } = nonogram;
 
-function drawCanvas(clearCanvas) {
-    resizeCanvas();
-
-    ctx.translate(0, 0);
-    ctx.scale(scale, scale);
-    ctx.translate(0, 0);
+    if (!grid) return;
 
     // Draw black square
     for (var i = 0; i < lines; i++) {
         for (var j = 0; j < columns; j++) {
             if (grid[i][j] == 1) {
-                fillSquare(j * dim, i * dim, dim, dim, "#424242");
+                canvasZoom.fillSquare(ctx, j * dim, i * dim, dim, dim, "#424242");
+            } else {
+                canvasZoom.fillSquare(ctx, j * dim, i * dim, dim, dim, "white");
             }
         }
     }
-
-    //Draw Vertical Lines
-    for (var i = 0; i <= columns; i++) {
-        drawLine(dim * i, 0, i * dim, lines * dim, 1, "black");
-    }
-
-    //Draw Horizontal Lines
-    for (var i = 0; i <= lines; i++) {
-        drawLine(0, i * dim, columns * dim, i * dim, 1, "black");
-    }
 }
 
-function mousemove(e) {
-    var mousePosition = getMousePosition(e);
+function onMouseUp(mouse) {
 
-    j = Math.floor((mousePosition.x / scale) / dim);
-    i = Math.floor((mousePosition.y / scale) / dim);
+    const { lines, columns, grid } = nonogram;
 
-    if (isPressed) {
-        if (operation == 0) {
-            setBlackCell(i, j);
-        } else if (operation == 1) {
-            removeBlackCell(i, j);
-        }
+    const j = Math.floor(mouse.x / dim);
+    const i = Math.floor(mouse.y / dim);
+
+    // Ignore if clicked outside
+    if (i < 0 || j < 0 || i >= lines || j >= columns) return;
+
+    // Flip the number
+    grid[i][j] = 1 - grid[i][j];
+
+    LocalStorageUtils.set("creative-mode-nonogram", nonogram);
+}
+
+function onInit() {
+
+    resizeCanvas();
+    draw();
+
+    const savedNonogram = LocalStorageUtils.get("creative-mode-nonogram");
+
+    if (savedNonogram) {
+        nonogram = savedNonogram;
     }
-}
 
-function mouseup(event) {
-    isPressed = false;
-
-    if (operation == 0) {
-        setBlackCell(i, j);
-    } else if (operation == 1) {
-        removeBlackCell(i, j);
-    }
-}
-
-function mousedown(event) {
-    isPressed = true;
-}
-
-$(document).ready(function () {
-    init();
-
-    $('#form-generate-drawing').on('submit', function (e) {
-        e.preventDefault();
-
-        lines = parseInt($("#lines").val());
-        columns = parseInt($("#columns").val());
-
-        grid = createMatrix(columns, lines);
-        drawCanvas();
+    $("#btn-export-to-json").click(function () {
+        ExportUtils.asJson(nonogram);
     });
 
-    $('#slider-zoom').on('change', function () {
-        scale = parseFloat(this.value);
-        drawCanvas();
-    });
-
-    //Resize window when open page
-    resizeCanvasScroll(140);
-
-    $("#button-export-to-json").click(function () {
-        var content = JSON.stringify(convertToJSON(grid, lines, columns));
-        saveTextAsFile(content, "application/json", lines + "x" + columns + "x1.json");
-    });
-
-    $("#button-export-to-png").click(function () {
-        var dataURL = canvas.toDataURL('image/png').replace("image/png", "image/octet-stream");;
-        $(this).attr("href", dataURL);
-    });
-
-    $("#button-add").click(function () {
-        operation = 0;
-    });
-
-    $("#button-remove").click(function () {
-        operation = 1;
+    $("#btn-export-to-png").click(function () {
+        ExportUtils.asPng(canvas);
     });
 
     $("#canvas-scroll").scroll(function (event) {
         scrollTop = $(this).scrollTop();
         scrollLeft = $(this).scrollLeft();
     });
-});
+}
+
+/**
+ * Disable the default browser context menu on canvas element.
+ */
+function onContextMenu(e) {
+    e.preventDefault();
+}
+
+canvasZoom.on("mouseup", onMouseUp);
+
+// Add Canvas Events
+canvas.addEventListener('contextmenu', onContextMenu);
+
+// Add Window Events
+window.addEventListener('resize', resizeCanvas);
+
+// Add Document Events
+document.addEventListener('DOMContentLoaded', onInit);
