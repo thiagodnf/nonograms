@@ -1,6 +1,7 @@
 import LocalStorageUtils from "./utils/LocalStorageUtils.js";
 import CanvasZoom from "./utils/CanvasZoom.js";
 import ExportUtils from "./utils/ExportUtils.js";
+import ImportUtils from "./utils/ImportUtils.js";
 
 // Cell's Dimensions
 const dim = 25;
@@ -23,6 +24,8 @@ const $btnNew = document.getElementById("btn-new");
 const $btnExportToJson = document.getElementById("btn-export-to-json");
 const $btnExportToPng = document.getElementById("btn-export-to-png");
 const $canvas = document.getElementById("canvas");
+const $btnOpen = document.getElementById('btn-open');
+const $input = document.getElementById('fileInput');
 
 const canvasZoom = new CanvasZoom($canvas);
 
@@ -146,6 +149,20 @@ function onInit() {
     $btnExportToPng.addEventListener('click', () => {
         ExportUtils.asPng(canvas);
     });
+
+    $btnOpen.addEventListener('click', () => $input.click());
+
+    $input.addEventListener('change', (e) => {
+
+        const file = e.target.files[0];
+
+        ImportUtils.readNonogram(file).then(data => {
+            nonogram = data;
+        }).catch(err => {
+            console.error(err.message);
+        });
+    });
+
 }
 
 /**

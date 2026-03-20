@@ -35,11 +35,20 @@
     <div class="container">
         <div class="row mb-3" id="toolbar">
             <div class="d-flex justify-content-between">
-                <div class="btn-group">
-                    <button class="btn btn-warning" id="btn-new">
-                        <i class="bi bi-plus-circle"></i>
-                        <span class="d-none d-sm-inline ms-2">New</span>
-                    </button>
+                <div>
+                    <div class="btn-group">
+                        <button class="btn btn-warning" id="btn-new">
+                            <i class="bi bi-plus-circle"></i>
+                            <span class="d-none d-sm-inline ms-2">New</span>
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-secondary" id="btn-open">
+                            <i class="bi bi-file-earmark-arrow-up"></i>
+                            <span class="d-none d-sm-inline ms-2">Open</span>
+                            <input type="file" id="fileInput" accept="application/json" hidden>
+                        </button>
+                    </div>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -67,6 +76,39 @@
 
                     <div class="modal-header">
                         <h5 class="modal-title">New</h5>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="input-group ">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="lines" name="lines" value="10" min="5" max="100" step="1" autofocus required autocomplete="off">
+                                <label for="lines">Lines</label>
+                            </div>
+                            <span class="input-group-text">x</span>
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="columns" name="columns" value="10" min="5" max="100" step="1" required autocomplete="off">
+                                <label for="columns">Columns</label>
+                            </div>
+                        </div>
+                        <div id="emailHelp" class="form-text">Type a number between 5 and 100</div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="openModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="openForm" novalidate autocomplete="off">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Open</h5>
                     </div>
 
                     <div class="modal-body">
