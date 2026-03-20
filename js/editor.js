@@ -22,11 +22,9 @@ const $newForm = document.getElementById('newForm');
 const $btnNew = document.getElementById("btn-new");
 const $btnExportToJson = document.getElementById("btn-export-to-json");
 const $btnExportToPng = document.getElementById("btn-export-to-png");
+const $canvas = document.getElementById("canvas");
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-const canvasZoom = new CanvasZoom(canvas);
+const canvasZoom = new CanvasZoom($canvas);
 
 const modal = new bootstrap.Modal($newModal, {
     backdrop: 'static',
@@ -88,7 +86,7 @@ function createMatrix(x, y) {
 
 function draw() {
 
-    canvasZoom.clear(ctx);
+    canvasZoom.clear();
 
     update();
 
@@ -105,9 +103,9 @@ function update() {
     for (var i = 0; i < lines; i++) {
         for (var j = 0; j < columns; j++) {
             if (grid[i][j] == 1) {
-                canvasZoom.fillSquare(ctx, j * dim, i * dim, dim, dim, "#424242");
+                canvasZoom.fillSquare(j * dim, i * dim, dim, dim, "#424242");
             } else {
-                canvasZoom.fillSquare(ctx, j * dim, i * dim, dim, dim, "white");
+                canvasZoom.fillSquare(j * dim, i * dim, dim, dim, "white");
             }
         }
     }
@@ -163,7 +161,7 @@ function onContextMenu(e) {
 canvasZoom.on("mouseup", onMouseUp);
 
 // Add Canvas Events
-canvas.addEventListener('contextmenu', onContextMenu);
+canvasZoom.canvas.addEventListener('contextmenu', onContextMenu);
 
 // Add Window Events
 window.addEventListener('resize', canvasZoom.resizeCanvas);

@@ -17,6 +17,7 @@ export default class CanvasZoom {
     constructor(canvas) {
 
         this.canvas = canvas;
+        this.ctx = this.canvas.getContext("2d");
 
         // internal storage for listeners
         this.listeners = {};
@@ -195,10 +196,6 @@ export default class CanvasZoom {
         this.scale = this.scale * (1 + scaleAmount);
     }
 
-    clear(ctx) {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    }
-
     on(trigger, handler) {
 
         if (!this.listeners[trigger]) {
@@ -217,33 +214,37 @@ export default class CanvasZoom {
         this.listeners[trigger].forEach(handler => handler(...args));
     }
 
-    fillSquare(ctx, x, y, width, height, color) {
+    clear() {
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    }
+
+    fillSquare(x, y, width, height, color) {
 
         x = this.toScreenX(x);
         y = this.toScreenY(y);
         width = this.size(width);
         height = this.size(height);
 
-        ctx.beginPath();
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 1;
-        ctx.fillStyle = color;
-        ctx.fillRect(x, y, width, height);
-        ctx.strokeRect(x, y, width, height);
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = "black";
+        this.ctx.lineWidth = 1;
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(x, y, width, height);
+        this.ctx.strokeRect(x, y, width, height);
     }
 
-    drawLine(ctx, x1, y1, x2, y2, color) {
+    drawLine(x1, y1, x2, y2, color) {
 
         x1 = this.toScreenX(x1);
         y1 = this.toScreenY(y1);
         x2 = this.toScreenX(x2);
         y2 = this.toScreenY(y2);
 
-        ctx.beginPath();
-        ctx.strokeStyle = color;
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = color;
+        this.ctx.moveTo(x1, y1);
+        this.ctx.lineTo(x2, y2);
+        this.ctx.lineWidth = 1;
+        this.ctx.stroke();
     }
 }
