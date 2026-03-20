@@ -2,6 +2,9 @@ import LocalStorageUtils from "./utils/LocalStorageUtils.js";
 import CanvasZoom from "./utils/CanvasZoom.js";
 import ExportUtils from "./utils/ExportUtils.js";
 
+// Cell's Dimensions
+const dim = 25;
+
 let nonogram = {
     lines: 5,
     columns: 5,
@@ -12,10 +15,7 @@ let nonogram = {
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0]
     ]
-}
-
-// Cell's Dimensions
-var dim = 25;
+};
 
 const $newModal = document.getElementById('newModal');
 const $newForm = document.getElementById('newForm');
@@ -25,6 +25,7 @@ const $btnExportToPng = document.getElementById("btn-export-to-png");
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+
 const canvasZoom = new CanvasZoom(canvas);
 
 const modal = new bootstrap.Modal($newModal, {
