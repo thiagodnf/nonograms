@@ -111,7 +111,7 @@ function update() {
     }
 }
 
-function onMouseUp(mouse) {
+function onMouseUp({mouse}) {
 
     const { lines, columns, grid } = nonogram;
 

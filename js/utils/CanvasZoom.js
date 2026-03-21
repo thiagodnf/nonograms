@@ -1,14 +1,10 @@
 export default class CanvasZoom {
 
-    static mouse = null;
-
     // coordinates of our cursor
     static cursorX;
     static cursorY;
     static prevCursorX;
     static prevCursorY;
-
-    static zoomSpeed = 0.002;
 
     // mouse functions
     static leftMouseDown = false;
@@ -19,6 +15,8 @@ export default class CanvasZoom {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
 
+        this.mouse = null;
+
         // internal storage for listeners
         this.listeners = {};
 
@@ -28,6 +26,10 @@ export default class CanvasZoom {
 
         // zoom amount
         this.scale = 1;
+
+        this.zoomSpeed = 0.002;
+
+        this.isMoving = false;
 
         const that = this;
 
@@ -55,6 +57,9 @@ export default class CanvasZoom {
 
         function onMouseOut(event) {
 
+            CanvasZoom.leftMouseDown = false;
+            CanvasZoom.rightMouseDown = false;
+
             that.emit('mouseout', {});
         }
 
@@ -78,7 +83,7 @@ export default class CanvasZoom {
             CanvasZoom.prevCursorX = event.pageX;
             CanvasZoom.prevCursorY = event.pageY;
 
-            that.emit('mousedown', { mouse: CanvasZoom.mouse });
+            that.emit('mousedown', { mouse: that.mouse });
         }
 
         function onMouseMove(event) {
@@ -91,14 +96,16 @@ export default class CanvasZoom {
                 // move the screen
                 that.offsetX += (CanvasZoom.cursorX - CanvasZoom.prevCursorX) / that.scale;
                 that.offsetY += (CanvasZoom.cursorY - CanvasZoom.prevCursorY) / that.scale;
+
+                that.isMoving = true;
             }
 
             CanvasZoom.prevCursorX = CanvasZoom.cursorX;
             CanvasZoom.prevCursorY = CanvasZoom.cursorY;
 
-            CanvasZoom.mouse = getMouseLocation(event);
+            that.mouse = getMouseLocation(event);
 
-            that.emit('mousemove', { mouse: CanvasZoom.mouse });
+            that.emit('mousemove', { mouse: that.mouse });
         }
 
         function onMouseUp() {
@@ -106,7 +113,11 @@ export default class CanvasZoom {
             CanvasZoom.leftMouseDown = false;
             CanvasZoom.rightMouseDown = false;
 
-            that.emit('mouseup', CanvasZoom.mouse);
+            if (!that.isMoving) {
+                that.emit('mouseup', { mouse: that.mouse });
+            }
+
+            that.isMoving = false;
         }
 
         function onMouseWheel(event) {
@@ -117,7 +128,7 @@ export default class CanvasZoom {
             const mouseY = event.clientY - rect.top;
 
             const prevScale = that.scale;
-            const scaleFactor = Math.exp(-event.deltaY * CanvasZoom.zoomSpeed);
+            const scaleFactor = Math.exp(-event.deltaY * that.zoomSpeed);
             const newScale = prevScale * scaleFactor;
 
             // world position before zoom
@@ -131,7 +142,7 @@ export default class CanvasZoom {
             that.offsetX = (mouseX / newScale) - worldX;
             that.offsetY = (mouseY / newScale) - worldY;
 
-            that.emit('wheel', CanvasZoom.mouse);
+            that.emit('wheel', { mouse: that.mouse });
         }
     }
 
@@ -139,7 +150,7 @@ export default class CanvasZoom {
 
         const rect = this.canvas.getBoundingClientRect();
 
-        const availableHeight = window.innerHeight - rect.top - 20;
+        const availableHeight = window.innerHeight - rect.top - 10;
 
         this.canvas.style.height = availableHeight + "px";
         this.canvas.width = rect.width;
